@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:login_flutter/components/custom_text.dart';
 import 'package:login_flutter/components/upper_header.dart';
 import 'package:login_flutter/screens/menuscreen.dart';
+import 'package:login_flutter/screens/securityscreen.dart';
+import 'package:login_flutter/screens/welcome.dart';
 import 'package:login_flutter/widgets/custom_switch.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -12,7 +14,7 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  bool isSwitched = false;
+  bool isSwitched = true;
   bool isSound = true;
 
   @override
@@ -88,7 +90,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               customText('Tareas ', 26),
                               SizedBox(width: he * 0.005),
                               Image.asset(
-                                'login_flutter/assets/images/Icons/plus.png',
+                                'assets/images/Icons/plus.png',
                                 height: 25,
                                 width: 25,
                                 color: Color.fromARGB(255, 141, 127, 65),
@@ -143,6 +145,152 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                   ),
                 ],
+              ),
+              SizedBox(height: he * 0.025),
+              Row(
+                children: [
+                  if (isSwitched == true)
+                    Icon(
+                      Icons.notifications_active_outlined,
+                      size: 25,
+                      color: Colors.black87,
+                    )
+                  else
+                    Icon(
+                      Icons.notifications_off_outlined,
+                      size: 25,
+                      color: Colors.black87,
+                    ),
+                  SizedBox(width: he * 0.015),
+                  const Text(
+                    'Notificaciones',
+                    style: TextStyle(
+                      fontFamily: 'MiFuente',
+                      fontSize: 18,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  CustomImageSwitch(
+                    value: isSwitched,
+                    onChanged: (context) {
+                      setState(() {
+                        isSwitched = context;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: he * 0.025),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SecurityScreen()),
+                  );
+                },
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/Icons/lock-alt.png',
+                      //color: Colors.black54,
+                    ),
+                    SizedBox(width: he * 0.015),
+                    const Text(
+                      'Privacidad y Seguridad',
+                      style: TextStyle(
+                        fontFamily: 'MiFuente',
+                        fontSize: 18,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    Image.asset(
+                      'assets/images/Icons/chevron-right.png',
+                      color: Colors.black54,
+                      height: 20,
+                      width: 20,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: he * 0.025),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/images/Icons/info-circle.png',
+                    //color: Colors.black54,
+                  ),
+                  SizedBox(width: he * 0.015),
+                  const Text(
+                    'Sobre la App',
+                    style: TextStyle(
+                      fontFamily: 'MiFuente',
+                      fontSize: 18,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Image.asset(
+                    'assets/images/Icons/chevron-right.png',
+                    color: Colors.black54,
+                    height: 20,
+                    width: 20,
+                  ),
+                ],
+              ),
+              SizedBox(height: he * 0.025),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/images/Icons/question-circle.png',
+                    //color: Colors.black54,
+                  ),
+                  SizedBox(width: he * 0.015),
+                  const Text(
+                    'Ayuda y Soporte',
+                    style: TextStyle(
+                      fontFamily: 'MiFuente',
+                      fontSize: 18,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Image.asset(
+                    'assets/images/Icons/chevron-right.png',
+                    color: Colors.black54,
+                    height: 20,
+                    width: 20,
+                  ),
+                ],
+              ),
+              SizedBox(height: he * 0.025),
+              const Divider(thickness: 1, color: Colors.black),
+              SizedBox(height: he * 0.02),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Welcome()),
+                  );
+                },
+                child: const Text(
+                  'Cerrar Sesión',
+                  style: TextStyle(
+                    fontFamily: 'MiFuente',
+                    fontSize: 16,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+              SizedBox(height: he * 0.02),
+              const Text(
+                'VERSION 0.1',
+                style: TextStyle(
+                  fontFamily: 'MiFuente',
+                  fontSize: 16,
+                  color: Colors.black54,
+                ),
               ),
             ],
           ),

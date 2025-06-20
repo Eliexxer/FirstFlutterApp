@@ -25,8 +25,8 @@ class _CustomImageSwitchState extends State<CustomImageSwitch> {
       onTap: _toggleSwitch,
       child: Image.asset(
         widget.value
-            ? 'assets/images/switch_on.png'   // Pon aquí la ruta de tu imagen "on"
-            : 'assets/images/switch_off.png', // Pon aquí la ruta de tu imagen "off"
+            ? 'assets/images/State=on.png'   // Pon aquí la ruta de tu imagen "on"
+            : 'assets/images/State=off.png', // Pon aquí la ruta de tu imagen "off"
         width: 40, // Ajusta el tamaño si lo deseas
         height: 30,
       ),
