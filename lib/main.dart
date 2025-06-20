@@ -29,7 +29,7 @@ class MainApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'MiFuente',
       ),
-      home: HomeScreen(),
+      home: Welcome(),
     );
   }
 }
