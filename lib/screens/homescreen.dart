@@ -191,7 +191,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: isLoading ? Center(child: CircularProgressIndicator(color: Colors.black, backgroundColor: Colors.black45,)) : _pages[activeIndex],
+      body: isLoading
+          ? Center(child: CircularProgressIndicator(color: Colors.black, backgroundColor: Colors.black45,))
+          : Column(
+            children: [
+              Expanded(child: _pages[activeIndex],),
+            ],
+          ),
     );
   }
 }
@@ -225,7 +231,7 @@ class MainHomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(child: Tareas()),
+        Tareas(),
       ],
     );
   }

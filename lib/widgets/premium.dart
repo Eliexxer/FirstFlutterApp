@@ -51,39 +51,41 @@ class _GoPremiumState extends State<GoPremium> {
                   ),
                 ),
                 SizedBox(width: he * 0.035),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '¡Vuélvete Premium!',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 22, 23, 22),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'MiFuente',
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '¡Vuélvete Premium!',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 22, 23, 22),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'MiFuente',
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Consigue acceso a todas las funciones\ny descargas ilimitadas',
-                      style: TextStyle(
-                        color: Colors.grey[800],
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'MiFuente',
+                      const SizedBox(height: 10),
+                      Text(
+                        'Consigue acceso a todas las funciones\ny descargas ilimitadas',
+                        style: TextStyle(
+                          color: Colors.grey[800],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'MiFuente',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Expanded(child: Container()),
                 IconButton(
                   onPressed: () {},
-                  icon: Image.asset('assets/images/Icons/chevron-right.png', width: 30, height: 30, color: Colors.grey,) /*Icon(
-                    Icons.arrow_forward_ios,
-                    color: Color.fromARGB(255, 22, 23, 22),
-                    size: 30,
-                  ),*/
+                  icon: Image.asset(
+                    'assets/images/Icons/chevron-right.png',
+                    width: 30,
+                    height: 30,
+                    color: Colors.grey,
+                  ),
                 ),
               ],
             ),
