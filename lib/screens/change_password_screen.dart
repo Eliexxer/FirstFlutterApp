@@ -35,22 +35,22 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 false,
                 page: const SecurityScreen(),
               ),
-              SizedBox(height: he * 0.042),
+              SizedBox(height: he * 0.033),
               Form(
                 key: _formChangePasswordKey,
                 child: Column(
                   children: [
-                    SizedBox(height: 24),
+                    //SizedBox(height: 24),
                     Text(
                       'Su contraseña debe contener al menos 8 caracteres, debe incluir al menos:\n - 1 Letra Mayúscula.\n - 1 Número.\n - 1 Caracter Especial',
                       style: TextStyle(
                         fontFamily: 'MiFuente',
-                        fontSize: 16,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[600],
                       ),
                     ),
-                    SizedBox(height: he * 0.01),
+                    SizedBox(height: he * 0.033),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,

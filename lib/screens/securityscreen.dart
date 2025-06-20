@@ -39,32 +39,41 @@ class _SecurityScreenState extends State<SecurityScreen> {
                   color: Colors.grey.shade600,
                 ),
               ),
+              SizedBox(height: he*0.023,),
               customOption(
                 'Contraseña',
                 'assets/images/Icons/lock-alt.png',
                 'assets/images/Icons/chevron-right.png',
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChangePasswordScreen()),
-                ),
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChangePasswordScreen(),
+                    ),
+                  );
+                },
               ),
               customOption(
                 'Mi Cuenta',
                 'assets/images/Icons/user-circle.png',
                 'assets/images/Icons/chevron-right.png',
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                ),
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                },
               ),
               customOption(
                 'Mis datos',
                 'assets/images/Icons/upload.png',
                 'assets/images/Icons/chevron-right.png',
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                ),
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                },
               ),
             ],
           ),
@@ -97,7 +106,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
               ),
             ),
             Expanded(child: Container()),
-            Image.asset(assetImage2, color: Colors.black54),
+            Image.asset(assetImage2, color: Colors.black54, height: 18, width: 18,),
           ],
         ),
       ),

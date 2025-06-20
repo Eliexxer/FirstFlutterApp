@@ -3,8 +3,9 @@ import 'package:intl/intl.dart';
 
 class DateOfBirthField extends StatefulWidget {
   final void Function(DateTime fechaNacimiento, int edad) onValidDate;
+  final bool? enabled;
 
-  const DateOfBirthField({super.key, required this.onValidDate});
+  const DateOfBirthField({super.key, required this.onValidDate, this.enabled});
 
   @override
   State<DateOfBirthField> createState() => _DateOfBirthFieldState();
@@ -61,6 +62,7 @@ class _DateOfBirthFieldState extends State<DateOfBirthField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: widget.enabled,
       controller: _controller,
       readOnly: true,
       decoration: InputDecoration(
@@ -86,9 +88,9 @@ class _DateOfBirthFieldState extends State<DateOfBirthField> {
         borderRadius: BorderRadius.circular(10),
         )
       ),
-      onTap: () async {
+      onTap: widget.enabled! ? () async {
         await _selectDate(context);
-      },
+      } : null,
       validator: _validator,
       onChanged: (value) {
         setState(() {

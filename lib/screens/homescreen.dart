@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               isLoading
                   ? 'Cargando...'
-                  : 'Hola${nombre != null ? ', $nombre $apellido' : ', Eliexer'}',
+                  : 'Hola${nombre != null ? ', $nombre $apellido' : ', '}',
               style: const TextStyle(
                 fontFamily: 'MiFuente',
                 color: Colors.black87,

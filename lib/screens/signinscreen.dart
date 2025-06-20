@@ -17,7 +17,7 @@ class _SignInScreenState extends State<SignInScreen> {
   bool agreePersonalData = false;
   bool _obscurePassword = true;
   String? _selectedGenero;
-  String? _carreraSeleccionada;
+  //String? _carreraSeleccionada;
   DateTime? fechaNacimiento;
   int? edad;
   final TextEditingController _passwordController = TextEditingController();
@@ -26,13 +26,14 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _apellidoController = TextEditingController();
+  final TextEditingController _carreraController = TextEditingController();
   final TextEditingController _correoController = TextEditingController();
 
   // Lista de opciones de género
   final List<String> _generos = ['Masculino', 'Femenino', 'Otro'];
 
   // Lista de opciones de carrera
-  final List<String> _carreras = [
+  /*final List<String> _carreras = [
     'Administración',
     'Contabilidad',
     'Computación',
@@ -51,7 +52,7 @@ class _SignInScreenState extends State<SignInScreen> {
     'Matemática',
     'Medicina',
     'Turismo',
-  ];
+  ];*/
 
   @override
   Widget build(BuildContext context) {
@@ -164,8 +165,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         ],
                       ),
                       SizedBox(height: 24),
-                      DropdownButtonFormField<String>(
-                        value: _carreraSeleccionada,
+                      TextFormField(
+                        controller: _carreraController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, ingrese su carrera';
@@ -190,7 +191,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        items:
+                        /*items:
                             _carreras.map((String carrera) {
                               return DropdownMenuItem(
                                 value: carrera,
@@ -201,7 +202,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           setState(() {
                             _carreraSeleccionada = newValue;
                           });
-                        },
+                        },*/
                       ),
                       SizedBox(height: 24),
                       DropdownButtonFormField<String>(
@@ -408,7 +409,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   .add({
                                     'nombre': _nombreController.text,
                                     'apellido': _apellidoController.text,
-                                    'carrera': _carreraSeleccionada,
+                                    'carrera': _carreraController.text,
                                     'genero': _selectedGenero,
                                     'correo': _correoController.text,
                                     'fechaNacimiento': fechaNacimiento,
