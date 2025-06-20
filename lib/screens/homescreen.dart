@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? nombre;
   String? apellido;
   String? carrera;
-  bool isLoading = false;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -30,6 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadDatosUsuario() async {
+    setState(() {
+      isLoading = true;
+    });
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       final query =
@@ -105,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () {
               Navigator.push(
-                context as BuildContext,
+                context,
                 MaterialPageRoute(builder: (context) => MenuScreen()),
               );
             },
@@ -150,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
               //fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
-            currentIndex: 0,
+            currentIndex: activeIndex, // <-- Usa la variable de estado
             items: [
               BottomNavigationBarItem(
                 icon: Image.asset(
@@ -188,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: _pages[activeIndex],
+      body: isLoading ? Center(child: CircularProgressIndicator(color: Colors.black, backgroundColor: Colors.black45,)) : _pages[activeIndex],
     );
   }
 }
