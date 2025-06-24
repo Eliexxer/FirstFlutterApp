@@ -4,8 +4,14 @@ import 'package:intl/intl.dart';
 class DateOfBirthField extends StatefulWidget {
   final void Function(DateTime fechaNacimiento, int edad) onValidDate;
   final bool? enabled;
+  final DateTime? initialDate; // <-- Nuevo parámetro
 
-  const DateOfBirthField({super.key, required this.onValidDate, this.enabled});
+  const DateOfBirthField({
+    super.key,
+    required this.onValidDate,
+    this.enabled,
+    this.initialDate, // <-- Nuevo parámetro
+  });
 
   @override
   State<DateOfBirthField> createState() => _DateOfBirthFieldState();
@@ -16,10 +22,20 @@ class _DateOfBirthFieldState extends State<DateOfBirthField> {
   DateTime? _fechaNacimiento;
   String? _errorText;
 
+  @override
+  void initState() {
+    super.initState();
+    // Si hay una fecha inicial, muéstrala en el campo
+    if (widget.initialDate != null) {
+      _fechaNacimiento = widget.initialDate;
+      _controller.text = DateFormat('dd/MM/yyyy').format(widget.initialDate!);
+    }
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime(DateTime.now().year - 12),
+      initialDate: _fechaNacimiento ?? DateTime(DateTime.now().year - 12),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       //locale: const Locale('es'),
@@ -70,7 +86,9 @@ class _DateOfBirthFieldState extends State<DateOfBirthField> {
           'Fecha de nacimiento',
           style: TextStyle(fontFamily: 'MiFuente'),
         ),
-        hintText: 'Selecciona tu fecha de nacimiento',
+        hintText: widget.initialDate != null
+            ? DateFormat('dd/MM/yyyy').format(widget.initialDate!)
+            : 'Selecciona tu fecha de nacimiento',
         hintStyle: const TextStyle(
           fontFamily: 'MiFuente',
           color: Colors.black26,
@@ -79,14 +97,14 @@ class _DateOfBirthFieldState extends State<DateOfBirthField> {
         suffixIcon: Image.asset(
           'assets/images/Icons/calendar-alt.png',
           color: Colors.black54,
-        ), // const Icon(Icons.calendar_today),
+        ),
         border: OutlineInputBorder(
           borderSide: const BorderSide(
-          color: Colors.black87,
-          width: 5,
+            color: Colors.black87,
+            width: 5,
+          ),
+          borderRadius: BorderRadius.circular(10),
         ),
-        borderRadius: BorderRadius.circular(10),
-        )
       ),
       onTap: widget.enabled! ? () async {
         await _selectDate(context);

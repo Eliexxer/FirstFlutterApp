@@ -82,33 +82,36 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                       ),
                       SizedBox(width: he * 0.015),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              customText('Tareas ', 26),
-                              SizedBox(width: he * 0.005),
-                              Image.asset(
-                                'assets/images/Icons/plus.png',
-                                height: 25,
-                                width: 25,
-                                color: Color.fromARGB(255, 141, 127, 65),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: he * 0.0005),
-                          const Text(
-                            'Desbloquea nuestras funciones más exclusivas',
-                            style: TextStyle(
-                              fontFamily: 'MiFuente',
-                              fontSize: 14,
-                              color: Colors.black54,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                customText('Tareas ', 26),
+                                SizedBox(width: he * 0.005),
+                                Image.asset(
+                                  'assets/images/Icons/plus.png',
+                                  height: 25,
+                                  width: 25,
+                                  color: Color.fromARGB(255, 141, 127, 65),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                            SizedBox(height: he * 0.0005),
+                            const Text(
+                              'Desbloquea nuestras funciones más exclusivas',
+                              style: TextStyle(
+                                fontFamily: 'MiFuente',
+                                fontSize: 14,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      Expanded(child: Container()),
+                      //Spacer(flex: 1,),
+                      SizedBox(width: he*0.005,),
                       Image.asset(
                         'assets/images/Icons/chevron-right.png',
                         color: Color.fromARGB(255, 22, 23, 22),
@@ -135,7 +138,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       color: Colors.black54,
                     ),
                   ),
-                  Expanded(child: Container()),
+                  Spacer(),
                   CustomImageSwitch(
                     value: isSound,
                     onChanged: (context) {

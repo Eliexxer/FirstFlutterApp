@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flutter/firebase_options.dart';
 import 'package:login_flutter/screens/homescreen.dart';
+import 'package:login_flutter/screens/profilescreen.dart';
+import 'package:login_flutter/screens/settingscreen.dart';
 import 'package:login_flutter/screens/signinscreen.dart';
 //import 'package:login_flutter/screens/homescreen.dart';
 import 'package:login_flutter/screens/welcome.dart';

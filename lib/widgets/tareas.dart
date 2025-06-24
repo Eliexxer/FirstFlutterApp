@@ -15,7 +15,7 @@ class Tareas extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: GridView.builder(
-        shrinkWrap: true,
+        //shrinkWrap: true,
         //physics: NeverScrollableScrollPhysics(),
         itemCount: tareaList.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -78,8 +78,8 @@ Widget buildTarea(BuildContext context, Tarea tareaList) {
           ),
         ),
         const SizedBox(height: 20),
-        Wrap(
-          runSpacing: 10,
+        Row(
+          //runSpacing: 10,
           children: [
             Expanded(
               child: _buildTareaStatus(

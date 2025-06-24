@@ -16,7 +16,7 @@ Widget upperHeader(
         GestureDetector(
           onTap: () {
             Navigator.push(
-              context as BuildContext,
+              context,
               MaterialPageRoute(builder: (context) => page),
             );
           },

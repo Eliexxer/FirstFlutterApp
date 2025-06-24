@@ -64,140 +64,139 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Row(
-          children: [
-            Container(
-              height: 45,
-              width: 45,
-              margin: EdgeInsets.only(left: 10, top: 5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  genero == 'Femenino'
-                      ? 'assets/images/mujer1.png'
-                      : genero == 'Masculino'
-                      ? 'assets/images/hombre3.png'
-                      : 'assets/images/hombre3.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(width: 18),
-            Text(
-              isLoading
-                  ? 'Cargando...'
-                  : 'Hola${nombre != null ? ', $nombre $apellido' : ', '}',
-              style: const TextStyle(
-                fontFamily: 'MiFuente',
-                color: Colors.black87,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MenuScreen()),
-              );
-            },
-            icon: Image.asset(
-              'assets/images/Icons/Menu.png',
-              width: 28,
-              height: 28,
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              blurRadius: 10,
-              spreadRadius: 5,
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-          child: BottomNavigationBar(
-            backgroundColor: const Color.fromARGB(255, 228, 221, 221),
-            selectedItemColor: Colors.black87,
-            unselectedItemColor: Colors.black87,
-            unselectedLabelStyle: TextStyle(
-              fontFamily: 'MiFuente',
-              fontWeight: FontWeight.w300,
-              //fontSize: 16,
-            ),
-            selectedLabelStyle: TextStyle(
-              fontFamily: 'MiFuente',
-              //fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-            currentIndex: activeIndex, // <-- Usa la variable de estado
-            items: [
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  'assets/images/Icons/home-alt.png',
-                  height: 30,
-                  width: 30,
-                ),
-                label: 'Inicio',
-              ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  'assets/images/Icons/user.png',
-                  height: 30,
-                  width: 30,
-                ),
-                label: 'Perfil',
-              ),
-            ],
-            onTap: (index) {
-              setState(() {
-                activeIndex = index;
-              });
-            },
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        backgroundColor: Colors.black87,
-        child: Image.asset(
-          'assets/images/Icons/plus.png',
-          width: 40,
-          height: 40,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: isLoading
-          ? Center(child: CircularProgressIndicator(color: Colors.black, backgroundColor: Colors.black45,))
-          : Column(
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Row(
             children: [
-              Expanded(child: _pages[activeIndex],),
+              Container(
+                height: 45,
+                width: 45,
+                margin: EdgeInsets.only(left: 10, top: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    genero == 'Femenino'
+                        ? 'assets/images/mujer1.png'
+                        : genero == 'Masculino'
+                        ? 'assets/images/hombre3.png'
+                        : 'assets/images/hombre3.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 18),
+              Text(
+                isLoading
+                    ? 'Cargando...'
+                    : 'Hola${nombre != null ? ', $nombre $apellido' : ', '}',
+                style: const TextStyle(
+                  fontFamily: 'MiFuente',
+                  color: Colors.black87,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MenuScreen()),
+                );
+              },
+              icon: Image.asset(
+                'assets/images/Icons/Menu.png',
+                width: 28,
+                height: 28,
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                blurRadius: 10,
+                spreadRadius: 5,
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: const Color.fromARGB(255, 228, 221, 221),
+              selectedItemColor: Colors.black87,
+              unselectedItemColor: Colors.black87,
+              unselectedLabelStyle: TextStyle(
+                fontFamily: 'MiFuente',
+                fontWeight: FontWeight.w300,
+                //fontSize: 16,
+              ),
+              selectedLabelStyle: TextStyle(
+                fontFamily: 'MiFuente',
+                //fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              currentIndex: activeIndex, // <-- Usa la variable de estado
+              items: [
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/images/Icons/home-alt.png',
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: 'Inicio',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/images/Icons/user.png',
+                    height: 30,
+                    width: 30,
+                  ),
+                  label: 'Perfil',
+                ),
+              ],
+              onTap: (index) {
+                setState(() {
+                  activeIndex = index;
+                });
+              },
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Colors.black87,
+          child: Image.asset(
+            'assets/images/Icons/plus.png',
+            width: 40,
+            height: 40,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: isLoading
+            ? Center(child: CircularProgressIndicator(color: Colors.black, backgroundColor: Colors.black45,))
+            : _pages[activeIndex],
+      ),
     );
   }
 }
@@ -231,7 +230,7 @@ class MainHomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        Tareas(),
+        //Tareas(),
       ],
     );
   }

@@ -82,8 +82,8 @@ class _GoPremiumState extends State<GoPremium> {
                   onPressed: () {},
                   icon: Image.asset(
                     'assets/images/Icons/chevron-right.png',
-                    width: 30,
-                    height: 30,
+                    width: 24,
+                    height: 24,
                     color: Colors.grey,
                   ),
                 ),
