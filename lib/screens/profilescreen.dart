@@ -325,6 +325,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         'edad': edad,
                                       });
                                 }
+                                if (!mounted) return;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
@@ -342,10 +343,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   mensaje =
                                       'Por seguridad, vuelve a iniciar sesión y reintenta.';
                                 }
+                                if (!mounted) return;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(mensaje)),
                                 );
                               } catch (e) {
+                                if (!mounted) return;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Error: $e')),
                                 );

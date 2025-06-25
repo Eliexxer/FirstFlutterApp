@@ -6,6 +6,7 @@ import 'package:login_flutter/screens/menuscreen.dart';
 import 'package:login_flutter/screens/profilescreen.dart';
 import 'package:login_flutter/widgets/premium.dart';
 import 'package:login_flutter/widgets/tareas.dart';
+import 'package:login_flutter/screens/registrar_asignatura_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -183,7 +184,19 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () async {
+            // Navega a la pantalla de registro y espera el resultado
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RegistrarAsignaturaScreen(),
+              ),
+            );
+            // Si se registró una nueva asignatura, refresca la pantalla
+            if (result == true) {
+              setState(() {}); // Esto forzará el rebuild y refresco de la lista
+            }
+          },
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           backgroundColor: Colors.black87,
           child: Image.asset(
@@ -220,17 +233,19 @@ class MainHomeScreen extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.all(15),
-          child: Text(
-            'Tareas pendientes',
-            style: TextStyle(
-              fontFamily: 'MiFuente',
-              fontSize: 26,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
+          child: Center(
+            child: Text(
+              'Tareas pendientes',
+              style: TextStyle(
+                fontFamily: 'MiFuente',
+                fontSize: 26,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey.shade600,
+              ),
             ),
           ),
         ),
-        //Tareas(),
+        Expanded(child: Tareas()),
       ],
     );
   }

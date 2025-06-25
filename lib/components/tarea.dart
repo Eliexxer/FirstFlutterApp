@@ -7,8 +7,11 @@ class Tarea{
   Color? bgColor;
   Color? iconColor;
   Color? btnColor;
-  num? left;
-  num? done;
+  num? tareasLeft;
+  num? tareasDone;
+  num? evaluacionesLeft;
+  num? evaluacionesDone;
+  num? nota;
   bool isLast;
 
   Tarea(
@@ -19,9 +22,12 @@ class Tarea{
       this.bgColor,
       this.iconColor,
       this.btnColor,
-      this.left,
-      this.done,
+      this.tareasLeft,
+      this.tareasDone,
+      this.evaluacionesLeft = 0,
+      this.evaluacionesDone = 0,
       this.isLast = false,
+      this.nota = 0,
     }
   );
   static List<Tarea> generarTarea() {
@@ -33,8 +39,8 @@ class Tarea{
         bgColor: Colors.black38,
         iconColor: Colors.black87,
         btnColor: Colors.black54,
-        left: 5,
-        done: 3,
+        tareasLeft: 5,
+        tareasDone: 3,
         isLast: true, 
       ),
       Tarea(
@@ -44,8 +50,8 @@ class Tarea{
         bgColor: Colors.black38,
         iconColor: Colors.black87,
         btnColor: Colors.black54,
-        left: 5,
-        done: 3,
+        tareasLeft: 5,
+        tareasDone: 3,
         isLast: true, 
       ),
       Tarea(
@@ -55,8 +61,9 @@ class Tarea{
         bgColor: Colors.grey[350],
         iconColor: Colors.white,
         btnColor: Colors.grey[500],
-        left: 5,
-        done: 3,
+        tareasLeft: 5,
+        tareasDone: 3,
+        nota: 10,
         isLast: false, 
       ),
       Tarea(
@@ -66,8 +73,8 @@ class Tarea{
         bgColor: Colors.black38,
         iconColor: Colors.black87,
         btnColor: Colors.black54,
-        left: 5,
-        done: 3,
+        tareasLeft: 5,
+        tareasDone: 3,
         isLast: false, 
       ),
       Tarea(
@@ -77,8 +84,8 @@ class Tarea{
         bgColor: Colors.black38,
         iconColor: Colors.black87,
         btnColor: Colors.black54,
-        left: 5,
-        done: 3,
+        tareasLeft: 5,
+        tareasDone: 3,
         isLast: false, 
       ),
     ];

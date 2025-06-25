@@ -40,7 +40,7 @@ class _GoPremiumState extends State<GoPremium> {
                   ),
                   child: ColorFiltered(
                     colorFilter: ColorFilter.mode(
-                      Color.fromARGB(255, 228, 221, 221).withOpacity(0.4),
+                      Color.fromARGB(102, 228, 221, 221),
                       BlendMode.srcATop,
                     ),
                     child: const Icon(
