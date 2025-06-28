@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flutter/components/upper_header.dart';
+import 'package:login_flutter/core/usuario_provider.dart';
 import 'package:login_flutter/screens/securityscreen.dart';
+import 'package:provider/provider.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -15,6 +16,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repeatPasswordController =
       TextEditingController();
+  final TextEditingController _currentPasswordController = TextEditingController();
   final _formChangePasswordKey = GlobalKey<FormState>();
 
   @override
@@ -51,6 +53,36 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
                     ),
                     SizedBox(height: he * 0.033),
+                    TextFormField(
+                      controller: _currentPasswordController,
+                      obscureText: true,
+                      obscuringCharacter: '*',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, ingrese su contraseña actual';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        label: const Text(
+                          'Contraseña Actual',
+                          style: TextStyle(fontFamily: 'MiFuente'),
+                        ),
+                        hintText: 'Contraseña actual',
+                        hintStyle: const TextStyle(
+                          color: Colors.black26,
+                          fontFamily: 'MiFuente',
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.black87,
+                            width: 5,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 24),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
@@ -166,20 +198,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   Future<void> _cambiarContrasena() async {
     if (_formChangePasswordKey.currentState!.validate()) {
-      try {
-        await FirebaseAuth.instance.currentUser!
-            .updatePassword(_passwordController.text.trim());
+      final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+      final error = await usuarioProvider.cambiarContrasena(
+        passwordActual: _currentPasswordController.text.trim(),
+        nuevaContrasena: _passwordController.text.trim(),
+      );
+      if (error == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Contraseña actualizada correctamente')),
         );
         // Opcional: Navega a otra pantalla o cierra el modal
-      } on FirebaseAuthException catch (e) {
-        String mensaje = 'Error al cambiar la contraseña';
-        if (e.code == 'requires-recent-login') {
-          mensaje = 'Por seguridad, vuelve a iniciar sesión y reintenta.';
-        }
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(mensaje)),
+          SnackBar(content: Text(error)),
         );
       }
     }

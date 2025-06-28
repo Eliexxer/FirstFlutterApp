@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:login_flutter/widgets/custom_switch.dart';
 import 'package:login_flutter/widgets/date_of_birth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:login_flutter/core/usuario_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,59 +12,43 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formEditProfileKey = GlobalKey<FormState>();
-  bool _camposEditables = false;
   String? _selectedGenero;
-  String? _carreraSeleccionada;
-  String? _usuarioDocId;
   DateTime? fechaNacimiento;
   int? edad;
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _apellidoController = TextEditingController();
   final TextEditingController _carreraController = TextEditingController();
-  final TextEditingController _correoController = TextEditingController();
+  final TextEditingController _preguntasController = TextEditingController();
+  final TextEditingController _respuestasController = TextEditingController();
 
   final List<String> _generos = ['Masculino', 'Femenino', 'Otro'];
 
   @override
   void initState() {
     super.initState();
-    _cargarDatosUsuario();
-  }
-
-  Future<void> _cargarDatosUsuario() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final query =
-          await FirebaseFirestore.instance
-              .collection('usuarios')
-              .where('correo', isEqualTo: user.email)
-              .limit(1)
-              .get();
-      if (query.docs.isNotEmpty) {
-        final doc = query.docs.first;
+    Future.microtask(() {
+      final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+      usuarioProvider.cargarDatosUsuario().then((_) {
         setState(() {
-          _usuarioDocId = doc.id; // <--- Guarda el ID del documento
-          _nombreController.text = doc['nombre'] ?? '';
-          _apellidoController.text = doc['apellido'] ?? '';
-          _correoController.text = doc['correo'] ?? '';
-          _carreraSeleccionada = doc['carrera'];
-          _selectedGenero = doc['genero'];
-          fechaNacimiento =
-              doc['fechaNacimiento'] != null
-                  ? (doc['fechaNacimiento'] as Timestamp).toDate()
-                  : null;
-          edad = doc['edad'];
+          _nombreController.text = usuarioProvider.nombre ?? '';
+          _apellidoController.text = usuarioProvider.apellido ?? '';
+          _carreraController.text = usuarioProvider.carrera ?? '';
+          _selectedGenero = usuarioProvider.genero;
+          _preguntasController.text = usuarioProvider.preguntas.toString();
+          _respuestasController.text = usuarioProvider.respuestas.toString();
+          fechaNacimiento = usuarioProvider.fechaNacimiento;
+          edad = usuarioProvider.edad;
         });
-      }
-    }
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var he = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF7F8FA),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -83,10 +66,91 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //upperHeader('Mi Perfil', context, false, page: const HomeScreen()),
                   SizedBox(height: 50),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 6),
+                          padding: EdgeInsets.symmetric(vertical: 18),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 6,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                _preguntasController.text.isEmpty
+                                    ? '0'
+                                    : _preguntasController.text,
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Posts',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 6),
+                          padding: EdgeInsets.symmetric(vertical: 18),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 6,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                _respuestasController.text.isEmpty
+                                    ? '0'
+                                    : _respuestasController.text,
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Answers',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: he * 0.03),
+                  Row(
                     children: [
                       Expanded(
                         child: TextFormField(
-                          enabled: _camposEditables,
                           controller: _nombreController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -117,7 +181,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(width: 16),
                       Expanded(
                         child: TextFormField(
-                          enabled: _camposEditables,
                           controller: _apellidoController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -149,7 +212,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: 24),
                   TextFormField(
-                    enabled: _camposEditables,
                     controller: _carreraController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -175,18 +237,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    /*items:
-                      _carreras.map((String carrera) {
-                        return DropdownMenuItem(
-                          value: carrera,
-                          child: Text(carrera),
-                        );
-                      }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _carreraSeleccionada = newValue;
-                    });
-                  },*/
                   ),
                   SizedBox(height: 24),
                   DropdownButtonFormField<String>(
@@ -197,13 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: TextStyle(fontFamily: 'MiFuente'),
                       ),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color:
-                              _camposEditables
-                                  ? Colors.black87
-                                  : Colors.grey[200] ?? Colors.grey,
-                          width: 5,
-                        ),
+                        borderSide: BorderSide(color: Colors.black87, width: 5),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -214,14 +258,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Text(genero),
                           );
                         }).toList(),
-                    onChanged:
-                        _camposEditables
-                            ? (String? newValue) {
-                              setState(() {
-                                _selectedGenero = newValue;
-                              });
-                            }
-                            : null,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedGenero = newValue;
+                      });
+                    },
                     disabledHint:
                         _selectedGenero != null
                             ? Text(_selectedGenero!)
@@ -234,135 +275,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: 24),
                   DateOfBirthField(
-                    enabled: _camposEditables,
+                    key: ValueKey(
+                      fechaNacimiento,
+                    ), // fuerza rebuild si cambia la fecha
                     initialDate: fechaNacimiento,
                     onValidDate: (fecha, edadCalculada) {
-                      fechaNacimiento = fecha;
-                      edad = edadCalculada;
+                      setState(() {
+                        fechaNacimiento = fecha;
+                        edad = edadCalculada;
+                      });
                     },
-                  ),
-                  SizedBox(height: 24),
-                  TextFormField(
-                    enabled: _camposEditables,
-                    controller: _correoController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, ingrese su correo electrónico';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      label: const Text(
-                        'Correo Electrónico',
-                        style: TextStyle(fontFamily: 'MiFuente'),
-                      ),
-                      hintText: 'ejemplo@gmail.com',
-                      hintStyle: const TextStyle(
-                        color: Colors.black26,
-                        fontFamily: 'MiFuente',
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.black87,
-                          width: 5,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      suffixIcon: Image.asset(
-                        'assets/images/Icons/envelope-alt.png',
-                        color: Colors.black45,
-                      ),
-                    ),
                   ),
                   SizedBox(height: 24),
                   Row(
                     children: [
-                      CustomImageSwitch(
-                        value: _camposEditables,
-                        onChanged: (context) {
-                          setState(() {
-                            _camposEditables = context;
-                          });
-                        },
-                      ),
                       SizedBox(width: 10),
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () async {
-                            if (!_camposEditables) {
+                            if (_formEditProfileKey.currentState!.validate()) {
+                              final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+                              await usuarioProvider.actualizarDatosUsuario(
+                                nombre: _nombreController.text,
+                                apellido: _apellidoController.text,
+                                carrera: _carreraController.text,
+                                genero: _selectedGenero,
+                                fechaNacimiento: fechaNacimiento,
+                                edad: edad,
+                              );
+                              if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    'Por favor acepta el proceso de información personal',
+                                    'Datos actualizados correctamente',
                                   ),
                                 ),
                               );
-                              return;
-                            }
-                            if (_formEditProfileKey.currentState!.validate()) {
-                              try {
-                                final user = FirebaseAuth.instance.currentUser;
-                                // Actualiza el correo en Firebase Auth
-                                if (user != null &&
-                                    user.email !=
-                                        _correoController.text.trim()) {
-                                  await user.verifyBeforeUpdateEmail(
-                                    _correoController.text.trim(),
-                                  );
-                                }
-                                // Actualiza los datos en Firestore
-                                if (_usuarioDocId != null) {
-                                  await FirebaseFirestore.instance
-                                      .collection('usuarios')
-                                      .doc(_usuarioDocId)
-                                      .update({
-                                        'nombre': _nombreController.text,
-                                        'apellido': _apellidoController.text,
-                                        'carrera': _carreraSeleccionada,
-                                        'genero': _selectedGenero,
-                                        'correo': _correoController.text,
-                                        'fechaNacimiento': fechaNacimiento,
-                                        'edad': edad,
-                                      });
-                                }
-                                if (!mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Datos actualizados correctamente',
-                                    ),
-                                  ),
-                                );
-                              } on FirebaseAuthException catch (e) {
-                                String mensaje = 'Error desconocido';
-                                if (e.code == 'email-already-in-use') {
-                                  mensaje = 'El correo ya está registrado';
-                                } else if (e.code == 'invalid-email') {
-                                  mensaje = 'El correo no es válido';
-                                } else if (e.code == 'requires-recent-login') {
-                                  mensaje =
-                                      'Por seguridad, vuelve a iniciar sesión y reintenta.';
-                                }
-                                if (!mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(mensaje)),
-                                );
-                              } catch (e) {
-                                if (!mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Error: $e')),
-                                );
-                              }
                             }
                           },
                           style: ButtonStyle(
                             foregroundColor: WidgetStatePropertyAll(
-                              _camposEditables
-                                  ? Colors.white70
-                                  : Colors.black38,
+                              Colors.white70,
                             ),
                             backgroundColor: WidgetStatePropertyAll(
-                              _camposEditables ? Colors.black87 : Colors.grey,
+                              Colors.black87,
                             ),
                             minimumSize: WidgetStatePropertyAll(
                               Size(double.infinity, 56),
@@ -394,7 +350,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _nombreController.dispose();
     _apellidoController.dispose();
     _dateController.dispose();
-    _correoController.dispose();
     super.dispose();
   }
 }

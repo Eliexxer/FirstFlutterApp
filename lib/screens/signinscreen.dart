@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:login_flutter/screens/signupscreen.dart';
 import 'package:login_flutter/widgets/custom_scaffold.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_flutter/widgets/date_of_birth.dart';
+import 'package:provider/provider.dart';
+import 'package:login_flutter/core/usuario_provider.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -31,28 +33,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // Lista de opciones de género
   final List<String> _generos = ['Masculino', 'Femenino', 'Otro'];
-
-  // Lista de opciones de carrera
-  /*final List<String> _carreras = [
-    'Administración',
-    'Contabilidad',
-    'Computación',
-    'Derecho',
-    'Enfermería',
-    'Farmacia',
-    'Filosofía',
-    'Física',
-    'Hotelería',
-    'Ingeniería de Sistemas',
-    'Ingeniería Civil',
-    'Ingeniería Aeronáutica',
-    'Ingeniería Eléctrica',
-    'Ingeniería Electrónica',
-    'Ingeniería en Telecomunicaciones',
-    'Matemática',
-    'Medicina',
-    'Turismo',
-  ];*/
 
   @override
   Widget build(BuildContext context) {
@@ -398,25 +378,21 @@ class _SignInScreenState extends State<SignInScreen> {
                           if (_formSignInKey.currentState!.validate()) {
                             try {
                               // Crear usuario en Firebase Auth
-                              await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                    email: _correoController.text.trim(),
-                                    password: _passwordController.text.trim(),
-                                  );
-                              // Aquí puedes guardar datos adicionales en Firestore si lo deseas
-                              await FirebaseFirestore.instance
-                                  .collection('usuarios')
-                                  .add({
-                                    'nombre': _nombreController.text,
-                                    'apellido': _apellidoController.text,
-                                    'carrera': _carreraController.text,
-                                    'genero': _selectedGenero,
-                                    'correo': _correoController.text,
-                                    'fechaNacimiento': fechaNacimiento,
-                                    'edad': edad,
-                                    'fechaRegistro':
-                                        FieldValue.serverTimestamp(),
-                                  });
+                              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                email: _correoController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              );
+                              // Guardar datos adicionales usando el provider
+                              final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+                              await usuarioProvider.registrarUsuario(
+                                nombre: _nombreController.text.trim(),
+                                apellido: _apellidoController.text.trim(),
+                                carrera: _carreraController.text.trim(),
+                                genero: _selectedGenero,
+                                fechaNacimiento: fechaNacimiento,
+                                edad: edad,
+                                fechaRegistro: DateTime.now(),
+                              );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(

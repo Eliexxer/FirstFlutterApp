@@ -23,7 +23,15 @@ Widget upperHeader(
           child: Icon(Icons.arrow_back_rounded, color: Colors.black, size: 30),
         ),
         SizedBox(width: he * 0.03),
-        customText(text, 28),
+        Expanded(
+          flex: 6,
+          child: customText(
+            text,
+            28,
+            maxLines: 2,
+            //overflow: TextOverflow.ellipsis,
+          ),
+        ),
         Expanded(child: Container()),
         isIcon
             ? Icon(Icons.search, color: Colors.black, size: 30)

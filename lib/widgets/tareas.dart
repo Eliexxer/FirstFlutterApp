@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:login_flutter/components/tarea.dart';
+import 'package:login_flutter/core/tarea.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:login_flutter/screens/asignatura_detalle_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Tareas extends StatelessWidget {
   Tareas({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return Center(child: Text('Usuario no autenticado'));
+    }
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('asignaturas').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('asignaturas')
+          .where('uid', isEqualTo: user.uid)
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -160,38 +168,32 @@ Widget buildTarea(BuildContext context, Tarea tareaList, String asignaturaId, Ma
             children: [
               Icon(tareaList.icon, color: tareaList.iconColor, size: 30),
               SizedBox(width: 20),
-              Text(
-                tareaList.title.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'MiFuente',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
+              Expanded(
+                child: Text(
+                  tareaList.title.toString(),
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'MiFuente',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Acumulada: ${notas['acumulada']}/20',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'MiFuente',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+              Container(
+                alignment: Alignment.centerRight,
+                constraints: BoxConstraints(minWidth: 90), // Ajusta el ancho mínimo si lo deseas
+                child: Text(
+                  'Nota: ${notas['acumulada']}/20',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'MiFuente',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
-                  /*Text(
-                    'Máxima posible: ${notas['maxima']}/20',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontFamily: 'MiFuente',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),*/
-                ],
+                ),
               ),
             ],
           ),

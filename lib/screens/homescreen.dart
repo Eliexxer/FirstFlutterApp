@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-//import 'package:login_flutter/widgets/custom_scaffold.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_flutter/screens/menuscreen.dart';
 import 'package:login_flutter/screens/profilescreen.dart';
+import 'package:login_flutter/screens/preguntas_screen.dart';
 import 'package:login_flutter/widgets/premium.dart';
 import 'package:login_flutter/widgets/tareas.dart';
 import 'package:login_flutter/screens/registrar_asignatura_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:login_flutter/core/usuario_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,8 +16,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> _pages = [MainHomeScreen(), ProfileScreen()];
-  int activeIndex = 0;
+  final GlobalKey<PreguntasScreenState> _tutoriaKey =
+      GlobalKey<PreguntasScreenState>();
+  late final List<Widget> _pages;
+  int activeIndex = 1;
   String? genero;
   String? nombre;
   String? apellido;
@@ -27,40 +29,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadDatosUsuario();
+    _pages = [
+      PreguntasScreen(key: _tutoriaKey),
+      MainHomeScreen(),
+      ProfileScreen(),
+    ];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadDatosUsuarioProvider();
+    });
   }
 
-  Future<void> _loadDatosUsuario() async {
+  Future<void> _loadDatosUsuarioProvider() async {
+    final usuarioProvider = Provider.of<UsuarioProvider>(
+      context,
+      listen: false,
+    );
     setState(() {
       isLoading = true;
     });
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final query =
-          await FirebaseFirestore.instance
-              .collection('usuarios')
-              .where('correo', isEqualTo: user.email)
-              .limit(1)
-              .get();
-      if (query.docs.isNotEmpty) {
-        final doc = query.docs.first;
-        setState(() {
-          genero = /*query.docs.first*/ doc['genero'] as String?;
-          nombre = doc['nombre'] as String?;
-          apellido = doc['apellido'] as String?;
-          carrera = doc['carrera'] as String?;
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          genero = null;
-          nombre = null;
-          apellido = null;
-          carrera = null;
-          isLoading = false;
-        });
-      }
-    }
+    await usuarioProvider.cargarDatosUsuario();
+    setState(() {
+      genero = usuarioProvider.genero;
+      nombre = usuarioProvider.nombre;
+      apellido = usuarioProvider.apellido;
+      carrera = usuarioProvider.carrera;
+      isLoading = false;
+    });
   }
 
   @override
@@ -68,63 +62,74 @@ class _HomeScreenState extends State<HomeScreen> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Row(
-            children: [
-              Container(
-                height: 45,
-                width: 45,
-                margin: EdgeInsets.only(left: 10, top: 5),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    genero == 'Femenino'
-                        ? 'assets/images/mujer1.png'
-                        : genero == 'Masculino'
-                        ? 'assets/images/hombre3.png'
-                        : 'assets/images/hombre3.png',
-                    fit: BoxFit.cover,
+        backgroundColor: Color(0xFFF7F8FA),
+        appBar:
+            activeIndex == 0
+                ? null
+                : AppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  title: Row(
+                    children: [
+                      Container(
+                        height: 45,
+                        width: 45,
+                        margin: EdgeInsets.only(left: 10, top: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            genero == 'Femenino'
+                                ? 'assets/images/mujer1.png'
+                                : genero == 'Masculino'
+                                ? 'assets/images/hombre3.png'
+                                : 'assets/images/hombre3.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 18),
+                      Text(
+                        isLoading
+                            ? 'Cargando...'
+                            : 'Hola${nombre != null ? ', $nombre $apellido' : ', '}',
+                        style: const TextStyle(
+                          fontFamily: 'MiFuente',
+                          color: Colors.black87,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
+                  actions: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: Image.asset('assets/images/Icons/edit.png', color: Colors.black,),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MenuScreen()),
+                        );
+                      },
+                      icon: Image.asset(
+                        'assets/images/Icons/Menu.png',
+                        width: 28,
+                        height: 28,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(width: 18),
-              Text(
-                isLoading
-                    ? 'Cargando...'
-                    : 'Hola${nombre != null ? ', $nombre $apellido' : ', '}',
-                style: const TextStyle(
-                  fontFamily: 'MiFuente',
-                  color: Colors.black87,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MenuScreen()),
-                );
-              },
-              icon: Image.asset(
-                'assets/images/Icons/Menu.png',
-                width: 28,
-                height: 28,
-              ),
-            ),
-          ],
-        ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30),
@@ -143,26 +148,35 @@ class _HomeScreenState extends State<HomeScreen> {
               topRight: Radius.circular(30),
             ),
             child: BottomNavigationBar(
-              backgroundColor: const Color.fromARGB(255, 228, 221, 221),
+              showSelectedLabels: true,
+              backgroundColor: Colors.white,
               selectedItemColor: Colors.black87,
               unselectedItemColor: Colors.black87,
               unselectedLabelStyle: TextStyle(
                 fontFamily: 'MiFuente',
                 fontWeight: FontWeight.w300,
-                //fontSize: 16,
               ),
               selectedLabelStyle: TextStyle(
                 fontFamily: 'MiFuente',
-                //fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
-              currentIndex: activeIndex, // <-- Usa la variable de estado
+              currentIndex: activeIndex,
               items: [
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    'assets/images/Recurso 2.png',
+                    height: 30,
+                    width: 30,
+                    color: Colors.black,
+                  ),
+                  label: 'Tutorías',
+                ),
                 BottomNavigationBarItem(
                   icon: Image.asset(
                     'assets/images/Icons/home-alt.png',
                     height: 30,
                     width: 30,
+                    color: Colors.black,
                   ),
                   label: 'Inicio',
                 ),
@@ -171,6 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     'assets/images/Icons/user.png',
                     height: 30,
                     width: 30,
+                    color: Colors.black,
                   ),
                   label: 'Perfil',
                 ),
@@ -178,39 +193,70 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: (index) {
                 setState(() {
                   activeIndex = index;
+                  // Si quieres recargar los datos del usuario al cambiar de pestaña:
+                  if (index == 2) {
+                    _loadDatosUsuarioProvider();
+                  }
                 });
               },
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            // Navega a la pantalla de registro y espera el resultado
-            final result = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => RegistrarAsignaturaScreen(),
-              ),
-            );
-            // Si se registró una nueva asignatura, refresca la pantalla
-            if (result == true) {
-              setState(() {}); // Esto forzará el rebuild y refresco de la lista
-            }
-          },
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: Colors.black87,
-          child: Image.asset(
-            'assets/images/Icons/plus.png',
-            width: 40,
-            height: 40,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: isLoading
-            ? Center(child: CircularProgressIndicator(color: Colors.black, backgroundColor: Colors.black45,))
-            : _pages[activeIndex],
+        floatingActionButton: _buildFAB(context),
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterFloat,
+        body:
+            isLoading
+                ? Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                    backgroundColor: Colors.black45,
+                  ),
+                )
+                : _pages[activeIndex],
       ),
     );
+  }
+
+  Widget _buildFAB(BuildContext context) {
+    if (activeIndex == 2) return SizedBox.shrink();
+    if (activeIndex == 0) {
+      return FloatingActionButton(
+        onPressed: () {
+          _tutoriaKey.currentState?.showNewQuestionDialog();
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        backgroundColor: Colors.black87,
+        child: Image.asset(
+          'assets/images/Icons/plus.png',
+          width: 40,
+          height: 40,
+        ),
+      );
+    }
+    if (activeIndex == 1) {
+      return FloatingActionButton(
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RegistrarAsignaturaScreen(),
+            ),
+          );
+          if (result == true) {
+            setState(() {});
+          }
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        backgroundColor: Colors.black87,
+        child: Image.asset(
+          'assets/images/Icons/plus.png',
+          width: 40,
+          height: 40,
+        ),
+      );
+    }
+    return SizedBox.shrink();
   }
 }
 
@@ -229,7 +275,10 @@ class MainHomeScreen extends StatelessWidget {
             top: 20,
             bottom: 20,
           ),
-          child: GoPremium(),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GoPremium(),
+          ),
         ),
         Container(
           padding: EdgeInsets.all(15),

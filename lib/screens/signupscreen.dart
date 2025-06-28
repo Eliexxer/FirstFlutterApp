@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:login_flutter/screens/homescreen.dart';
 import 'package:login_flutter/screens/signinscreen.dart';
 import 'package:login_flutter/widgets/custom_scaffold.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:login_flutter/core/usuario_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -31,18 +32,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final email = prefs.getString('email');
     final password = prefs.getString('password');
     if (remember && email != null && password != null) {
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (e) => HomeScreen()),
-        );
-      } catch (e) {
-        // Si falla el login automático, no hacer nada
-      }
+      setState(() {
+        _correoController.text = email;
+        _passwordController.text = password;
+      });
     }
   }
 
@@ -211,24 +204,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: ElevatedButton(
                             onPressed: () async {
                               if (_formSignInKey.currentState!.validate()) {
-                                try {
-                                  await FirebaseAuth.instance
-                                      .signInWithEmailAndPassword(
-                                    email: _correoController.text.trim(),
-                                    password: _passwordController.text.trim(),
-                                  );
-                                  // Guarda los datos si rememberPassword es true
-                                  if (rememberPassword) {
-                                    final prefs = await SharedPreferences.getInstance();
-                                    await prefs.setString('email', _correoController.text.trim());
-                                    await prefs.setString('password', _passwordController.text.trim());
-                                    await prefs.setBool('rememberPassword', true);
-                                  } else {
-                                    final prefs = await SharedPreferences.getInstance();
-                                    await prefs.remove('email');
-                                    await prefs.remove('password');
-                                    await prefs.setBool('rememberPassword', false);
-                                  }
+                                final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+                                final exito = await usuarioProvider.iniciarSesion(
+                                  correo: _correoController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                  recordar: rememberPassword,
+                                );
+                                if (exito) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Inicio de sesión exitoso')),
                                   );
@@ -236,15 +218,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     context,
                                     MaterialPageRoute(builder: (e) => HomeScreen()),
                                   );
-                                } on FirebaseAuthException catch (e) {
-                                  String mensaje = 'Error desconocido';
-                                  if (e.code == 'user-not-found') {
-                                    mensaje = 'Usuario no encontrado';
-                                  } else if (e.code == 'wrong-password') {
-                                    mensaje = 'Contraseña incorrecta';
-                                  }
+                                } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(mensaje)),
+                                    const SnackBar(content: Text('Correo o contraseña incorrectos')),
                                   );
                                 }
                               }

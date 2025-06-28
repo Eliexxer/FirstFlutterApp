@@ -3,14 +3,14 @@ import 'package:intl/intl.dart';
 
 class DateOfBirthField extends StatefulWidget {
   final void Function(DateTime fechaNacimiento, int edad) onValidDate;
-  final bool? enabled;
-  final DateTime? initialDate; // <-- Nuevo parámetro
+  final bool enabled;
+  final DateTime? initialDate;
 
   const DateOfBirthField({
     super.key,
     required this.onValidDate,
-    this.enabled,
-    this.initialDate, // <-- Nuevo parámetro
+    this.enabled = true, // Valor por defecto
+    this.initialDate,
   });
 
   @override
@@ -106,7 +106,7 @@ class _DateOfBirthFieldState extends State<DateOfBirthField> {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      onTap: widget.enabled! ? () async {
+      onTap: (widget.enabled) ? () async {
         await _selectDate(context);
       } : null,
       validator: _validator,

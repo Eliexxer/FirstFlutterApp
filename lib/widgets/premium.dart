@@ -43,11 +43,7 @@ class _GoPremiumState extends State<GoPremium> {
                       Color.fromARGB(102, 228, 221, 221),
                       BlendMode.srcATop,
                     ),
-                    child: const Icon(
-                      Icons.workspace_premium_outlined,
-                      size: 40,
-                      color: Colors.black,
-                    ),
+                    child: Image.asset('assets/images/Recurso 8.png', height: 24, width: 24,)
                   ),
                 ),
                 SizedBox(width: he * 0.035),
@@ -84,7 +80,7 @@ class _GoPremiumState extends State<GoPremium> {
                     'assets/images/Icons/chevron-right.png',
                     width: 24,
                     height: 24,
-                    color: Colors.grey,
+                    color: const Color(0xffFDC830), // mismo color que el gradiente
                   ),
                 ),
               ],
