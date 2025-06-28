@@ -13,18 +13,24 @@ class PreguntasScreen extends StatefulWidget {
 class PreguntasScreenState extends State<PreguntasScreen> {
   int _lastFeedCount = 0;
   bool _hayNuevasPreguntas = false;
+  bool _isLoadingPreguntas = false;
 
   // Simula la verificación de nuevas preguntas
   Future<void> checkForNewQuestions() async {
+    if (_isLoadingPreguntas) return;
+    _isLoadingPreguntas = true;
     final provider = Provider.of<PreguntasProvider>(context, listen: false);
     await provider.cargarPreguntas();
     final currentCount = provider.preguntas.length;
     if (_lastFeedCount != 0 && currentCount > _lastFeedCount) {
-      setState(() {
-        _hayNuevasPreguntas = true;
-      });
+      if (mounted) {
+        setState(() {
+          _hayNuevasPreguntas = true;
+        });
+      }
     }
     _lastFeedCount = currentCount;
+    _isLoadingPreguntas = false;
   }
 
   @override
@@ -48,19 +54,7 @@ class PreguntasScreenState extends State<PreguntasScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
-      await Provider.of<PreguntasProvider>(
-        context,
-        listen: false,
-      ).cargarPreguntas();
-      setState(() {
-        _lastFeedCount =
-            Provider.of<PreguntasProvider>(
-              context,
-              listen: false,
-            ).preguntas.length;
-      });
-    });
+    Future.microtask(_loadPreguntasSeguro);
     // Chequea cada 10 segundos si hay nuevas preguntas
     Future.doWhile(() async {
       await Future.delayed(const Duration(seconds: 10));
@@ -70,12 +64,34 @@ class PreguntasScreenState extends State<PreguntasScreen> {
     });
   }
 
-  Future<void> recargarFeed() async {
+  Future<void> _loadPreguntasSeguro() async {
+    if (_isLoadingPreguntas) return;
+    _isLoadingPreguntas = true;
     await Provider.of<PreguntasProvider>(
       context,
       listen: false,
     ).cargarPreguntas();
+    if (!mounted) return;
+    setState(() {
+      _lastFeedCount =
+          Provider.of<PreguntasProvider>(
+            context,
+            listen: false,
+          ).preguntas.length;
+    });
+    _isLoadingPreguntas = false;
+  }
+
+  Future<void> recargarFeed() async {
+    if (_isLoadingPreguntas) return;
+    _isLoadingPreguntas = true;
+    await Provider.of<PreguntasProvider>(
+      context,
+      listen: false,
+    ).cargarPreguntas();
+    if (!mounted) return;
     setState(() {});
+    _isLoadingPreguntas = false;
   }
 
   void showNewQuestionDialog() {

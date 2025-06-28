@@ -24,24 +24,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final List<String> _generos = ['Masculino', 'Femenino', 'Otro'];
 
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-      usuarioProvider.cargarDatosUsuario().then((_) {
-        setState(() {
-          _nombreController.text = usuarioProvider.nombre ?? '';
-          _apellidoController.text = usuarioProvider.apellido ?? '';
-          _carreraController.text = usuarioProvider.carrera ?? '';
-          _selectedGenero = usuarioProvider.genero;
-          _preguntasController.text = usuarioProvider.preguntas.toString();
-          _respuestasController.text = usuarioProvider.respuestas.toString();
-          fechaNacimiento = usuarioProvider.fechaNacimiento;
-          edad = usuarioProvider.edad;
-        });
-      });
+    Future.microtask(_loadDatosUsuarioSeguro);
+  }
+
+  Future<void> _loadDatosUsuarioSeguro() async {
+    if (_isLoading) return;
+    _isLoading = true;
+    final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+    await usuarioProvider.cargarDatosUsuario();
+    if (!mounted) return;
+    setState(() {
+      _nombreController.text = usuarioProvider.nombre ?? '';
+      _apellidoController.text = usuarioProvider.apellido ?? '';
+      _carreraController.text = usuarioProvider.carrera ?? '';
+      _selectedGenero = usuarioProvider.genero;
+      _preguntasController.text = usuarioProvider.preguntas.toString();
+      _respuestasController.text = usuarioProvider.respuestas.toString();
+      fechaNacimiento = usuarioProvider.fechaNacimiento;
+      edad = usuarioProvider.edad;
     });
+    _isLoading = false;
   }
 
   @override

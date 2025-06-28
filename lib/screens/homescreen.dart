@@ -39,7 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  bool _isLoadingUser = false;
   Future<void> _loadDatosUsuarioProvider() async {
+    if (_isLoadingUser) return;
+    _isLoadingUser = true;
     final usuarioProvider = Provider.of<UsuarioProvider>(
       context,
       listen: false,
@@ -55,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
       carrera = usuarioProvider.carrera;
       isLoading = false;
     });
+    _isLoadingUser = false;
   }
 
   @override
@@ -190,14 +194,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   label: 'Perfil',
                 ),
               ],
-              onTap: (index) {
+              onTap: (index) async {
                 setState(() {
                   activeIndex = index;
-                  // Si quieres recargar los datos del usuario al cambiar de pestaña:
-                  if (index == 2) {
-                    _loadDatosUsuarioProvider();
-                  }
                 });
+                // Solo recarga si no está cargando y solo si es perfil
+                if (index == 2 && !_isLoadingUser) {
+                  await _loadDatosUsuarioProvider();
+                }
               },
             ),
           ),
