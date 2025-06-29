@@ -23,7 +23,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.4
   #qr_code_scanner: ^1.0.1
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/loguitppp.png"
 
 flutter:
   uses-material-design: true
@@ -33,5 +39,5 @@ flutter:
   fonts:
     - family: MiFuente
       fonts:
-      - asset: assets\fonts\Patrick_Hand\PatrickHand-Regular.ttf
-      #- asset: assets\fonts\Jersey_15\Jersey15-Regular.ttf
+        - asset: assets/fonts/Patrick_Hand/PatrickHand-Regular.ttf
+        # - asset: assets/fonts/Jersey_15/Jersey15-Regular.ttf

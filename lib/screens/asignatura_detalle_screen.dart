@@ -96,7 +96,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
     bool isVencida = !hecha && fecha != null && fecha.isBefore(DateTime.now());
 
     return Card(
-      color: Colors.grey[200],
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 6),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -220,7 +220,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                icon: Icon(Icons.delete, color: Colors.deepPurpleAccent),
+                icon: Image.asset('assets/images/Icons/trash-alt.png', color: Colors.deepPurpleAccent,),//Icon(Icons.delete, color: Colors.deepPurpleAccent),
                 onPressed: () {
                   setState(() => list.removeAt(index));
                 },
@@ -237,6 +237,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
     var he = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFFF7F8FA),
         //appBar: AppBar(title: const Text('Detalle de Asignatura')),
         body: SingleChildScrollView(
           padding: EdgeInsets.only(
@@ -272,7 +273,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
               TextButton.icon(
                 onPressed: () => _addItem(evaluacionesPendientes),
                 icon: Icon(Icons.add),
-                label: Text('Agregar evaluación pendiente'),
+                label: Text('Agregar evaluación pendiente', style: TextStyle(color: Colors.deepPurpleAccent),),
               ),
               const SizedBox(height: 10),
               Text(
@@ -286,7 +287,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
               TextButton.icon(
                 onPressed: () => _addItem(evaluacionesHechas, hecha: true),
                 icon: Icon(Icons.add),
-                label: Text('Agregar evaluación hecha'),
+                label: Text('Agregar evaluación hecha', style: TextStyle(color: Colors.deepPurpleAccent),),
               ),
               const SizedBox(height: 10),
               Text(
@@ -300,7 +301,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
               TextButton.icon(
                 onPressed: () => _addItem(tareasPendientes),
                 icon: Icon(Icons.add),
-                label: Text('Agregar tarea pendiente'),
+                label: Text('Agregar tarea pendiente', style: TextStyle(color: Colors.deepPurpleAccent),),
               ),
               const SizedBox(height: 10),
               Text(
@@ -314,7 +315,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
               TextButton.icon(
                 onPressed: () => _addItem(tareasHechas, hecha: true),
                 icon: Icon(Icons.add),
-                label: Text('Agregar tarea hecha'),
+                label: Text('Agregar tarea hecha', style: TextStyle(color: Colors.deepPurpleAccent),),
               ),
               const SizedBox(height: 20),
               // Botones apilados verticalmente, no uno al lado del otro
@@ -386,7 +387,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 0),
             ],
           ),
         ),

@@ -13,27 +13,58 @@ class RespuestasScreen extends StatefulWidget {
 class _RespuestasScreenState extends State<RespuestasScreen> {
   final TextEditingController _respuestaController = TextEditingController();
   bool _enviando = false;
+  late PreguntasProvider _provider;
+  late String _preguntaId;
+  List<Map<String, dynamic>> _respuestas = [];
+  late VoidCallback _listener;
+
+  @override
+  void initState() {
+    super.initState();
+    _provider = Provider.of<PreguntasProvider>(context, listen: false);
+    _preguntaId = widget.preguntaDoc['id'];
+    _updateRespuestas();
+    // Listener para cambios en el provider
+    _listener = () {
+      _updateRespuestas();
+    };
+    _provider.addListener(_listener);
+  }
+
+  void _updateRespuestas() {
+    final pregunta = _provider.getPreguntaById(_preguntaId);
+    if (pregunta != null && mounted) {
+      setState(() {
+        _respuestas = List<Map<String, dynamic>>.from(pregunta['respuestas'] ?? []);
+        // También actualiza el doc local para mantener consistencia
+        widget.preguntaDoc['respuestas'] = _respuestas;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _provider.removeListener(_listener);
+    _respuestaController.dispose();
+    super.dispose();
+  }
 
   Future<void> _enviarRespuesta() async {
     if (_respuestaController.text.trim().isEmpty) return;
     setState(() => _enviando = true);
-    final provider = Provider.of<PreguntasProvider>(context, listen: false);
-    await provider.agregarRespuesta(
-      preguntaId: widget.preguntaDoc['id'],
+    await _provider.agregarRespuesta(
+      preguntaId: _preguntaId,
       respuesta: _respuestaController.text.trim(),
     );
     _respuestaController.clear();
     setState(() => _enviando = false);
-    // Recargar la pregunta para mostrar la nueva respuesta
-    setState(() {
-      widget.preguntaDoc['respuestas'] = provider.getPreguntaById(widget.preguntaDoc['id'])?['respuestas'] ?? [];
-    });
+    // _updateRespuestas se llamará automáticamente por el listener
   }
 
   @override
   Widget build(BuildContext context) {
     final data = widget.preguntaDoc;
-    final respuestas = List<Map<String, dynamic>>.from(data['respuestas'] ?? []);
+    final respuestas = _respuestas;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pregunta'),

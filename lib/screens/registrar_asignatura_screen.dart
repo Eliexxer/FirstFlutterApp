@@ -60,6 +60,7 @@ class _RegistrarAsignaturaScreenState extends State<RegistrarAsignaturaScreen> {
   }) {
     final item = list[index];
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 6),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -120,7 +121,7 @@ class _RegistrarAsignaturaScreenState extends State<RegistrarAsignaturaScreen> {
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                icon: Icon(Icons.delete, color: Colors.deepPurpleAccent),
+                icon: Image.asset('assets/images/Icons/trash-alt.png', color: Colors.deepPurpleAccent,),//Icon(Icons.delete, color: Colors.deepPurpleAccent),
                 onPressed: () {
                   setState(() => list.removeAt(index));
                 },
@@ -137,6 +138,7 @@ class _RegistrarAsignaturaScreenState extends State<RegistrarAsignaturaScreen> {
     var he = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFFF7F8FA),
         //appBar: AppBar(title: const Text('Registrar Asignatura')),
         body: SingleChildScrollView(
           padding: EdgeInsets.only(left: he * 0.03, right: he * 0.03),
