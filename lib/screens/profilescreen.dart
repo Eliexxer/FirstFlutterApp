@@ -19,37 +19,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _apellidoController = TextEditingController();
   final TextEditingController _carreraController = TextEditingController();
-  final TextEditingController _preguntasController = TextEditingController();
-  final TextEditingController _respuestasController = TextEditingController();
+  // Eliminados los controladores de contadores, usaremos el provider directamente
 
   final List<String> _generos = ['Masculino', 'Femenino', 'Otro'];
-
-  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(_loadDatosUsuarioSeguro);
+    final usuarioProvider = Provider.of<UsuarioProvider>(
+      context,
+      listen: false,
+    );
+    usuarioProvider.escucharUsuario();
+    // Ya no es necesario llamar a _loadDatosUsuarioSeguro porque escucharUsuario actualiza en tiempo real
+    _nombreController.text = usuarioProvider.nombre ?? '';
+    _apellidoController.text = usuarioProvider.apellido ?? '';
+    _carreraController.text = usuarioProvider.carrera ?? '';
+    _selectedGenero = usuarioProvider.genero;
+    fechaNacimiento = usuarioProvider.fechaNacimiento;
+    edad = usuarioProvider.edad;
   }
 
-  Future<void> _loadDatosUsuarioSeguro() async {
-    if (_isLoading) return;
-    _isLoading = true;
-    final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    await usuarioProvider.cargarDatosUsuario();
-    if (!mounted) return;
-    setState(() {
-      _nombreController.text = usuarioProvider.nombre ?? '';
-      _apellidoController.text = usuarioProvider.apellido ?? '';
-      _carreraController.text = usuarioProvider.carrera ?? '';
-      _selectedGenero = usuarioProvider.genero;
-      _preguntasController.text = usuarioProvider.preguntas.toString();
-      _respuestasController.text = usuarioProvider.respuestas.toString();
-      fechaNacimiento = usuarioProvider.fechaNacimiento;
-      edad = usuarioProvider.edad;
-    });
-    _isLoading = false;
-  }
+  // El método _loadDatosUsuarioSeguro ya no es necesario porque escucharUsuario actualiza en tiempo real
 
   @override
   Widget build(BuildContext context) {
@@ -70,88 +61,123 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //upperHeader('Mi Perfil', context, false, page: const HomeScreen()),
                   SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 6),
-                          padding: EdgeInsets.symmetric(vertical: 18),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 6,
-                                offset: Offset(0, 2),
+                  Consumer<UsuarioProvider>(
+                    builder: (context, usuarioProvider, _) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 6),
+                              padding: EdgeInsets.symmetric(vertical: 18),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                            ],
+                              child: Column(
+                                children: [
+                                  Text(
+                                    usuarioProvider.preguntas.toString(),
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    'Preguntas',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          child: Column(
-                            children: [
-                              Text(
-                                _preguntasController.text.isEmpty
-                                    ? '0'
-                                    : _preguntasController.text,
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 6),
+                              padding: EdgeInsets.symmetric(vertical: 18),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Posts',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black54,
-                                ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    usuarioProvider.respuestas.toString(),
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    'Respuestas',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 6),
-                          padding: EdgeInsets.symmetric(vertical: 18),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 6,
-                                offset: Offset(0, 2),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 6),
+                              padding: EdgeInsets.symmetric(vertical: 18),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                            ],
+                              child: Column(
+                                children: [
+                                  Text(
+                                    usuarioProvider.respuestasDestacadas.toString(),
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    'Destacadas',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          child: Column(
-                            children: [
-                              Text(
-                                _respuestasController.text.isEmpty
-                                    ? '0'
-                                    : _respuestasController.text,
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Answers',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                        ],
+                      );
+                    },
                   ),
                   SizedBox(height: he * 0.03),
                   Row(
@@ -301,7 +327,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formEditProfileKey.currentState!.validate()) {
-                              final usuarioProvider = Provider.of<UsuarioProvider>(context, listen: false);
+                              final usuarioProvider =
+                                  Provider.of<UsuarioProvider>(
+                                    context,
+                                    listen: false,
+                                  );
                               await usuarioProvider.actualizarDatosUsuario(
                                 nombre: _nombreController.text,
                                 apellido: _apellidoController.text,

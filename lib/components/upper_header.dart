@@ -6,11 +6,12 @@ Widget upperHeader(
   BuildContext context,
   bool isIcon, {
   required Widget page,
+  Widget? trailing, // <-- Nuevo parámetro opcional
 }) {
   var he = MediaQuery.of(context).size.height;
 
   return Padding(
-    padding: EdgeInsets.only(top: he * 0.03),
+    padding: EdgeInsets.only(top: he * 0.03, right: he * 0.02),
     child: Row(
       children: [
         GestureDetector(
@@ -29,13 +30,16 @@ Widget upperHeader(
             text,
             28,
             maxLines: 2,
-            //overflow: TextOverflow.ellipsis,
           ),
         ),
         Expanded(child: Container()),
         isIcon
             ? Icon(Icons.search, color: Colors.black, size: 30)
             : Container(),
+        if (trailing != null) ...[
+          SizedBox(width: 8),
+          trailing,
+        ],
       ],
     ),
   );

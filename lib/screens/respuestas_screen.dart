@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:login_flutter/core/preguntas_y_respuestas_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RespuestasScreen extends StatefulWidget {
   final Map<String, dynamic> preguntaDoc;
-  RespuestasScreen({Key? key, required this.preguntaDoc}) : super(key: key);
+  const RespuestasScreen({super.key, required this.preguntaDoc});
 
   @override
   _RespuestasScreenState createState() => _RespuestasScreenState();
@@ -113,6 +114,11 @@ class _RespuestasScreenState extends State<RespuestasScreen> {
                       separatorBuilder: (_, __) => const SizedBox(height: 10),
                       itemBuilder: (context, i) {
                         final r = respuestas[i];
+                        final user = FirebaseAuth.instance.currentUser;
+                        final likes = List<String>.from(r['likes'] ?? []);
+                        final likedByMe = user != null && likes.contains(user.uid);
+                        final isDestacada = r['destacar'] == true;
+
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -125,9 +131,15 @@ class _RespuestasScreenState extends State<RespuestasScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    r['usuario'] ?? 'Anónimo',
-                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        r['usuario'] ?? 'Anónimo',
+                                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                                      ),
+                                      if (isDestacada)
+                                        Icon(Icons.star, color: Colors.amber, size: 20),
+                                    ],
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
@@ -142,6 +154,23 @@ class _RespuestasScreenState extends State<RespuestasScreen> {
                                 ],
                               ),
                             ),
+                            IconButton(
+                              icon: Icon(
+                                likedByMe ? Icons.favorite : Icons.favorite_border,
+                                color: likedByMe ? Colors.deepPurpleAccent : Colors.grey,
+                                size: 22,
+                              ),
+                              onPressed: () async {
+                                if (user == null) return;
+                                await Provider.of<PreguntasProvider>(context, listen: false)
+                                    .toggleLikeRespuesta(
+                                      preguntaId: _preguntaId,
+                                      respuestaIndex: i,
+                                      userUid: user.uid,
+                                    );
+                              },
+                            ),
+                            Text('${likes.length}'),
                           ],
                         );
                       },

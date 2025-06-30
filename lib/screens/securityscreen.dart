@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_flutter/components/custom_option.dart';
 import 'package:login_flutter/components/upper_header.dart';
 import 'package:login_flutter/screens/change_password_screen.dart';
 import 'package:login_flutter/screens/homescreen.dart';
@@ -77,37 +78,6 @@ class _SecurityScreenState extends State<SecurityScreen> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget customOption(
-    String text,
-    String assetImage1,
-    String assetImage2,
-    onTap,
-  ) {
-    //var he = MediaQuery.of(context).size.height;
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Row(
-          children: [
-            Image.asset(assetImage1),
-            SizedBox(width: 15),
-            Text(
-              text,
-              style: TextStyle(
-                fontFamily: 'MiFuente',
-                fontSize: 18,
-                color: Colors.black54,
-              ),
-            ),
-            Expanded(child: Container()),
-            Image.asset(assetImage2, color: Colors.black54, height: 18, width: 18,),
-          ],
         ),
       ),
     );

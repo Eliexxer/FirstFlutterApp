@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:login_flutter/screens/pruebas_screen.dart';
+import 'package:login_flutter/screens/tutoria_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:login_flutter/screens/respuestas_screen.dart';
 import 'package:login_flutter/core/preguntas_y_respuestas_provider.dart';
@@ -199,10 +201,13 @@ class PreguntasScreenState extends State<PreguntasScreen> {
         centerTitle: true,
         title: Row(
           children: [
-            SizedBox(width: 15,),
+            SizedBox(width: 15),
             Text(
               'EsTuPrime Community',
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -212,7 +217,12 @@ class PreguntasScreenState extends State<PreguntasScreen> {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TutoriaScreen()),
+                    );
+                  },
                   icon: Image.asset(
                     'assets/images/Recurso 8.png',
                     width: 28,
@@ -221,7 +231,12 @@ class PreguntasScreenState extends State<PreguntasScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PruebasScreen()),
+                    );
+                  },
                   icon: Image.asset(
                     'assets/images/Icons/receipt-alt.png',
                     color: Colors.deepPurpleAccent,
@@ -292,7 +307,7 @@ class PreguntasScreenState extends State<PreguntasScreen> {
                     const SizedBox(height: 8),
                   ],
                 ),
-                if (_hayNuevasPreguntas)
+                /*if (_hayNuevasPreguntas)
                   Positioned(
                     right: 0,
                     top: 0,
@@ -315,7 +330,7 @@ class PreguntasScreenState extends State<PreguntasScreen> {
                         heroTag: 'refreshFeed',
                       ),
                     ),
-                  ),
+                  ),*/
               ],
             ),
             // Feed

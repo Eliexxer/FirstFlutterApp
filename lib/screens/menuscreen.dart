@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:login_flutter/screens/contacto_screen.dart';
 import 'package:login_flutter/screens/homescreen.dart';
 import 'package:login_flutter/screens/settingscreen.dart';
 
@@ -45,18 +46,18 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             SizedBox(height: he * 0.13),
-            Text(
-              'Contáctanos',
-              style: TextStyle(fontFamily: 'MiFuente', fontSize: 30),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ContactoScreen()));
+              },
+              child: Text(
+                'Contáctanos',
+                style: TextStyle(fontFamily: 'MiFuente', fontSize: 30),
+              ),
             ),
             SizedBox(height: he * 0.03),
             Text(
               'Sobre Nosotros',
-              style: TextStyle(fontFamily: 'MiFuente', fontSize: 30),
-            ),
-            SizedBox(height: he * 0.03),
-            Text(
-              'Términos y Condiciones',
               style: TextStyle(fontFamily: 'MiFuente', fontSize: 30),
             ),
             SizedBox(height: he * 0.03),

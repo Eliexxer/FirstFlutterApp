@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,10 @@ class UsuarioProvider extends ChangeNotifier {
   DateTime? fechaRegistro;
   int preguntas = 0;
   int respuestas = 0;
+  int respuestasDestacadas = 0;
   bool cargando = false;
+
+  StreamSubscription<DocumentSnapshot>? _userSub;
 
   // Cargar datos del usuario desde Firestore
   Future<void> cargarDatosUsuario() async {
@@ -35,6 +40,7 @@ class UsuarioProvider extends ChangeNotifier {
         genero = data['genero'] ?? '';
         preguntas = data['preguntas'] ?? 0;
         respuestas = data['respuestas'] ?? 0;
+        respuestasDestacadas = data['respuestasDestacadas'] ?? 0;
         edad = data['edad'];
         // Fecha de nacimiento
         if (data['fechaNacimiento'] != null) {
@@ -89,6 +95,7 @@ class UsuarioProvider extends ChangeNotifier {
         'fechaRegistro': fechaRegistro ?? now,
         'preguntas': 0,
         'respuestas': 0,
+        'respuestasDestacadas': 0,
       }, SetOptions(merge: true));
       this.uid = user.uid;
       this.correo = user.email;
@@ -150,6 +157,7 @@ class UsuarioProvider extends ChangeNotifier {
     fechaRegistro = null;
     preguntas = 0;
     respuestas = 0;
+    respuestasDestacadas = 0;
     notifyListeners();
   }
 
@@ -243,5 +251,33 @@ class UsuarioProvider extends ChangeNotifier {
     } catch (e) {
       return 'Error: $e';
     }
+  }
+
+  void escucharUsuario() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    _userSub?.cancel();
+    _userSub = FirebaseFirestore.instance.collection('usuarios').doc(user.uid).snapshots().listen((doc) {
+      final data = doc.data();
+      if (data == null) return;
+      nombre = data['nombre'];
+      apellido = data['apellido'];
+      carrera = data['carrera'];
+      genero = data['genero'];
+      fechaNacimiento = (data['fechaNacimiento'] != null)
+          ? (data['fechaNacimiento'] as Timestamp).toDate()
+          : null;
+      edad = data['edad'];
+      preguntas = data['preguntas'] ?? 0;
+      respuestas = data['respuestas'] ?? 0;
+      respuestasDestacadas = data['respuestasDestacadas'] ?? 0;
+      notifyListeners();
+    });
+  }
+
+  @override
+  void dispose() {
+    _userSub?.cancel();
+    super.dispose();
   }
 }
