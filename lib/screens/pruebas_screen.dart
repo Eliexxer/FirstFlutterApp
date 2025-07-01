@@ -27,7 +27,7 @@ class _PruebasScreenState extends State<PruebasScreen> {
     'Examen Intermedio',
     'Examen Final',
   ];
-  String? _selectedUniversidad = 'UNEFA';
+  String? _selectedUniversidad = 'Universidad Central de Venezuela';
   String? _selectedMateria = 'Matemática';
   String? _selectedTopico;
   int _tipoSeleccionado = 2; // 0: Ejercicios, 1: Exámenes, 2: Ambos
@@ -40,25 +40,25 @@ class _PruebasScreenState extends State<PruebasScreen> {
     {
       'titulo': 'Cálculo II - Examen Intermedio',
       'fecha': '2023-04-15',
-      'universidad': 'Universidad Central de Venezuea',
+      'universidad': 'Universidad Central de Venezuela',
       'materia': 'Matemática',
       'topico': 'Examen Final',
       'tipo': 1, // Examen
     },
     {
-      'titulo': 'Linear Algebra - Practice Problems',
+      'titulo': 'Álgebra Lineal - Problemas de Práctica',
       'fecha': '2023-03-20',
       'universidad': 'UNEFA',
-      'materia': 'Matemática',
+      'materia': 'Álgebra Lineal',
       'topico': 'Problemas de Práctica',
       'tipo': 0, // Ejercicio
     },
     {
-      'titulo': 'Physics I - Final Exam',
+      'titulo': 'Física I - Examen Final',
       'fecha': '2023-02-28',
-      'universidad': 'University National',
-      'materia': 'Physics',
-      'topico': 'Final Exam',
+      'universidad': 'UNEFA',
+      'materia': 'Física',
+      'topico': 'Examen Final',
       'tipo': 1, // Examen
     },
     // Puedes agregar más materiales aquí

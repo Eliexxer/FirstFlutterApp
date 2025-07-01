@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:login_flutter/screens/menuscreen.dart';
 import 'package:login_flutter/screens/profilescreen.dart';
 import 'package:login_flutter/screens/preguntas_screen.dart';
+import 'package:login_flutter/screens/premium_screen.dart';
 import 'package:login_flutter/widgets/premium.dart';
 import 'package:login_flutter/widgets/tareas.dart';
 import 'package:login_flutter/screens/registrar_asignatura_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:login_flutter/core/usuario_provider.dart';
+import 'package:login_flutter/core/premium_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadDatosUsuarioProvider();
+      _loadPremiumStatus();
     });
   }
 
@@ -59,6 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
       isLoading = false;
     });
     _isLoadingUser = false;
+  }
+
+  Future<void> _loadPremiumStatus() async {
+    final premiumProvider = Provider.of<PremiumProvider>(context, listen: false);
+    await premiumProvider.cargarEstadoPremium();
+    premiumProvider.escucharEstadoPremium();
   }
 
   @override
@@ -111,10 +120,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   actions: [
-                    IconButton(
+                    /*IconButton(
                       onPressed: () {},
                       icon: Image.asset('assets/images/Icons/edit.png', color: Colors.black,),
-                    ),
+                    ),*/
                     IconButton(
                       onPressed: () {
                         Navigator.push(
@@ -269,37 +278,53 @@ class MainHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            right: 8.0,
-            left: 8.0,
-            top: 20,
-            bottom: 20,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GoPremium(),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(15),
-          child: Center(
-            child: Text(
-              'Tareas pendientes',
-              style: TextStyle(
-                fontFamily: 'MiFuente',
-                fontSize: 26,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade600,
+    return Consumer<PremiumProvider>(
+      builder: (context, premiumProvider, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Solo mostrar el widget premium si el usuario NO es premium
+            if (!premiumProvider.isPremium) 
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 8.0,
+                  left: 8.0,
+                  top: 20,
+                  bottom: 20,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PremiumScreen(),
+                        ),
+                      );
+                    },
+                    child: GoPremium(),
+                  ),
+                ),
+              ),
+            Container(
+              padding: EdgeInsets.all(15),
+              child: Center(
+                child: Text(
+                  'Tareas pendientes',
+                  style: TextStyle(
+                    fontFamily: 'MiFuente',
+                    fontSize: 26,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Expanded(child: Tareas()),
-      ],
+            Expanded(child: Tareas()),
+          ],
+        );
+      },
     );
   }
 }

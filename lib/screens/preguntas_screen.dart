@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:login_flutter/screens/pruebas_screen.dart';
 import 'package:login_flutter/screens/tutoria_screen.dart';
+import 'package:login_flutter/widgets/premium_guard_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:login_flutter/screens/respuestas_screen.dart';
 import 'package:login_flutter/core/preguntas_y_respuestas_provider.dart';
@@ -220,7 +221,12 @@ class PreguntasScreenState extends State<PreguntasScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TutoriaScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => PremiumGuard(
+                          feature: 'tutoria',
+                          child: TutoriaScreen(),
+                        ),
+                      ),
                     );
                   },
                   icon: Image.asset(
@@ -234,7 +240,12 @@ class PreguntasScreenState extends State<PreguntasScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PruebasScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => PremiumGuard(
+                          feature: 'pruebas',
+                          child: PruebasScreen(),
+                        ),
+                      ),
                     );
                   },
                   icon: Image.asset(
@@ -307,30 +318,6 @@ class PreguntasScreenState extends State<PreguntasScreen> {
                     const SizedBox(height: 8),
                   ],
                 ),
-                /*if (_hayNuevasPreguntas)
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 40.0, right: 8.0),
-                      child: FloatingActionButton.extended(
-                        onPressed: () async {
-                          await recargarFeed();
-                          setState(() {
-                            _hayNuevasPreguntas = false;
-                          });
-                        },
-                        backgroundColor: Colors.deepPurpleAccent,
-                        icon: const Icon(Icons.refresh, color: Colors.white),
-                        label: const Text(
-                          'Nuevas preguntas',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        elevation: 2,
-                        heroTag: 'refreshFeed',
-                      ),
-                    ),
-                  ),*/
               ],
             ),
             // Feed

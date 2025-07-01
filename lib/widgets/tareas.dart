@@ -34,7 +34,7 @@ class Tareas extends StatelessWidget {
             final data = doc.data() as Map<String, dynamic>;
             final tarea = Tarea(
               title: data['nombre'] ?? '',
-              bgColor: Colors.black38,
+              bgColor: Colors.grey[400],
               icon: Icons.book,
               iconColor: Colors.white,
               btnColor: Colors.grey[500],

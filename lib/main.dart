@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flutter/core/preguntas_y_respuestas_provider.dart';
+import 'package:login_flutter/core/premium_provider.dart';
 import 'package:login_flutter/core/tareas_provider.dart';
 import 'package:login_flutter/firebase_options.dart';
 import 'package:login_flutter/screens/welcome.dart';
@@ -23,6 +24,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UsuarioProvider()),
         ChangeNotifierProvider(create: (_) => TareasProvider()),
         ChangeNotifierProvider(create: (_) => PreguntasProvider()),
+        ChangeNotifierProvider(create: (_) => PremiumProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

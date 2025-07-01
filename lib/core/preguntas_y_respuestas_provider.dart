@@ -105,7 +105,7 @@ class PreguntasProvider extends ChangeNotifier {
     // No recargar, el stream lo actualizará automáticamente
   }
 
-  Future<void> toggleLikeRespuesta({
+Future<void> toggleLikeRespuesta({
     required String preguntaId,
     required int respuestaIndex,
     required String userUid,
@@ -139,6 +139,7 @@ class PreguntasProvider extends ChangeNotifier {
 
     // 5. Actualiza los destacados y los contadores de usuarios
     await _updateDestacadasCounters(
+      preguntaId: preguntaId,
       respuestas: updatedRespuestas,
       oldDestacados: oldDestacados,
       newTopIndexes: newTopIndexes,
@@ -158,7 +159,7 @@ List<int> _getTop2Indexes(List<Map<String, dynamic>> respuestas) {
 Future<void> _updateDestacadasCounters({
   required List<Map<String, dynamic>> respuestas,
   required Set<String> oldDestacados,
-  required List<int> newTopIndexes,
+  required List<int> newTopIndexes, required String preguntaId,
 }) async {
   // 1. Actualiza el campo 'destacar' en cada respuesta (solo los top2 deben tener true)
   Set<String> nuevosDestacados = {};

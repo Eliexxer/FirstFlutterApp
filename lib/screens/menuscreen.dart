@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:login_flutter/screens/contacto_screen.dart';
 import 'package:login_flutter/screens/homescreen.dart';
 import 'package:login_flutter/screens/settingscreen.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -48,7 +50,10 @@ class _MenuScreenState extends State<MenuScreen> {
             SizedBox(height: he * 0.13),
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ContactoScreen()));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContactoScreen()),
+                );
               },
               child: Text(
                 'Contáctanos',
@@ -56,9 +61,19 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             SizedBox(height: he * 0.03),
-            Text(
-              'Sobre Nosotros',
-              style: TextStyle(fontFamily: 'MiFuente', fontSize: 30),
+            GestureDetector(
+              onTap: () async {
+                const url = 'https://www.google.com/'; // Reemplaza con tu URL
+                if (await canLaunchUrlString(url)) {
+                  await launchUrlString(url);
+                } else {
+                  throw 'No se pudo abrir $url';
+                }
+              },
+              child: Text(
+                'Sobre Nosotros',
+                style: TextStyle(fontFamily: 'MiFuente', fontSize: 30),
+              ),
             ),
             SizedBox(height: he * 0.03),
             GestureDetector(

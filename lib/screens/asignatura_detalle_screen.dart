@@ -123,6 +123,7 @@ class _AsignaturaDetalleScreenState extends State<AsignaturaDetalleScreen> {
                         builder: (context) {
                           final controller = TextEditingController();
                           return AlertDialog(
+                            backgroundColor: Colors.white,
                             title: Text('¿Ya fue evaluada?'),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
