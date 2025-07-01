@@ -5,7 +5,6 @@ import 'package:login_flutter/screens/premium_screen.dart';
 import 'package:login_flutter/widgets/date_of_birth.dart';
 import 'package:provider/provider.dart';
 import 'package:login_flutter/core/usuario_provider.dart';
-import 'package:login_flutter/screens/settingscreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
