@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
                   // Widget Premium - Solo mostrar si NO es premium
                   Consumer<PremiumProvider>(
                     builder: (context, premiumProvider, child) {
@@ -161,15 +161,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [
-                                  Color.fromARGB(255, 208, 240, 1),
-                                  Color.fromARGB(255, 253, 170, 52),
+                                  Color(0xffFDC830), Color(0XFFf37335)
+                                  //Color.fromARGB(255, 208, 240, 1),
+                                  //Color.fromARGB(255, 253, 170, 52),
                                 ],
                               ),
                             ),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                color: Colors.grey[200],
+                                color: Colors.transparent,//Colors.grey[200],
                               ),
                               padding: EdgeInsets.all(he * 0.012),
                               child: Row(
@@ -180,23 +181,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     padding: EdgeInsets.all(he * 0.01),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
-                                      color: Colors.grey[300],
+                                      color: Colors.transparent//Colors.grey[300],
                                     ),
                                     child: ColorFiltered(
                                       colorFilter: ColorFilter.mode(
                                         const Color.fromARGB(
-                                          255,
-                                          224,
-                                          224,
-                                          224,
-                                        ).withOpacity(0.6),
+                                          102, 228, 221, 221
+                                          //255,
+                                          //224,
+                                          //224,
+                                          //224,
+                                        ),
                                         BlendMode.srcATop,
                                       ),
-                                      child: Icon(
+                                      child: Image.asset('assets/images/Recurso 8.png', height: 24, width: 24, color: Colors.black,),/*Icon(
                                         Icons.workspace_premium_outlined,
                                         size: 30,
                                         color: Colors.black54,
-                                      ),
+                                      ),*/
                                     ),
                                   ),
                                   SizedBox(width: he * 0.015),
@@ -213,12 +215,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               'assets/images/Icons/plus.png',
                                               height: 25,
                                               width: 25,
-                                              color: Color.fromARGB(
+                                              color: Colors.black,/*Color.fromARGB(
                                                 255,
                                                 141,
                                                 127,
                                                 65,
-                                              ),
+                                              ),*/
                                             ),
                                           ],
                                         ),

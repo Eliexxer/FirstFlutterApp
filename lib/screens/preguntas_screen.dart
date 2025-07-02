@@ -60,7 +60,7 @@ class PreguntasScreenState extends State<PreguntasScreen> {
     Future.microtask(_loadPreguntasSeguro);
     // Chequea cada 10 segundos si hay nuevas preguntas
     Future.doWhile(() async {
-      await Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 3));
       if (!mounted) return false;
       await checkForNewQuestions();
       return true;

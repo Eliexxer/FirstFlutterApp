@@ -290,7 +290,7 @@ class MainHomeScreen extends StatelessWidget {
                   right: 8.0,
                   left: 8.0,
                   top: 20,
-                  bottom: 20,
+                  bottom: 0,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -308,7 +308,7 @@ class MainHomeScreen extends StatelessWidget {
                 ),
               ),
             Container(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(10),
               child: Center(
                 child: Text(
                   'Tareas pendientes',
@@ -316,7 +316,7 @@ class MainHomeScreen extends StatelessWidget {
                     fontFamily: 'MiFuente',
                     fontSize: 26,
                     fontWeight: FontWeight.w500,
-                    color: Colors.grey.shade600,
+                    color: Colors.black,
                   ),
                 ),
               ),

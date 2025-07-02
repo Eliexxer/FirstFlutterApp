@@ -34,10 +34,10 @@ class Tareas extends StatelessWidget {
             final data = doc.data() as Map<String, dynamic>;
             final tarea = Tarea(
               title: data['nombre'] ?? '',
-              bgColor: Colors.grey[400],
+              bgColor: Colors.deepPurpleAccent,
               icon: Icons.book,
               iconColor: Colors.white,
-              btnColor: Colors.grey[500],
+              btnColor: Colors.deepPurpleAccent[400],
               tareasLeft: (data['tareasPendientes'] as List?)?.length ?? 0,
               tareasDone: (data['tareasHechas'] as List?)?.length ?? 0,
               evaluacionesLeft: (data['evaluacionesPendientes'] as List?)?.length ?? 0,
@@ -211,7 +211,7 @@ Widget buildTarea(BuildContext context, Tarea tareaList, String asignaturaId, Ma
               const SizedBox(width: 5),
               Expanded(
                 child: _buildTareaStatus(
-                  Colors.grey[400]!,
+                  Colors.deepPurpleAccent,
                   tareaList.iconColor!,
                   '${tareaList.tareasDone} tareas hechas',
                 ),
@@ -224,7 +224,7 @@ Widget buildTarea(BuildContext context, Tarea tareaList, String asignaturaId, Ma
             children: [
               Expanded(
                 child: _buildTareaStatus(
-                  Colors.grey[400]!,
+                  Colors.deepPurpleAccent,
                   tareaList.iconColor!,
                   '${tareaList.evaluacionesLeft} evaluaciones faltantes',
                 ),

@@ -26,24 +26,24 @@ class _GoPremiumState extends State<GoPremium> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(he * 0.02),
-              color: Colors.grey[200],
+              color: Colors.transparent,
             ),
             padding: EdgeInsets.all(he * 0.012),
             child: Row(
               children: [
                 Container(
-                  height: he * 0.05,
-                  width: he * 0.05,
+                  height: he * 0.06,
+                  width: he * 0.06,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(he * 0.02),
-                    color: Colors.grey[300],
+                    color: Colors.transparent,//const Color(0xffFDC830),//Colors.deepPurpleAccent.shade400,
                   ),
                   child: ColorFiltered(
                     colorFilter: ColorFilter.mode(
                       Color.fromARGB(102, 228, 221, 221),
                       BlendMode.srcATop,
                     ),
-                    child: Image.asset('assets/images/Recurso 8.png', height: 24, width: 24,)
+                    child: Image.asset('assets/images/Recurso 8.png', height: 24, width: 24, color: Colors.black),//Colors.white,)
                   ),
                 ),
                 SizedBox(width: he * 0.035),
@@ -55,7 +55,7 @@ class _GoPremiumState extends State<GoPremium> {
                       const Text(
                         '¡Vuélvete Premium!',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 22, 23, 22),
+                          color: Colors.black,//Color.fromARGB(255, 22, 23, 22),
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           fontFamily: 'MiFuente',
@@ -63,10 +63,10 @@ class _GoPremiumState extends State<GoPremium> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Consigue acceso a todas las funciones\ny descargas ilimitadas',
+                        'Consigue acceso a nuestra comunidad de profesionales y nuestros recursos de estudio ilimitados',
                         style: TextStyle(
-                          color: Colors.grey[800],
-                          fontSize: 16,
+                          color: Colors.black,//Colors.grey[800],
+                          fontSize: 14,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'MiFuente',
                         ),
@@ -80,7 +80,7 @@ class _GoPremiumState extends State<GoPremium> {
                     'assets/images/Icons/chevron-right.png',
                     width: 24,
                     height: 24,
-                    color: const Color(0xffFDC830), // mismo color que el gradiente
+                    color: Colors.black//const Color(0xffFDC830), // mismo color que el gradiente
                   ),
                 ),
               ],
