@@ -1,3 +1,3 @@
-# login_flutter
+# EsTuApp (Proyecto Universitario)
 
-A new Flutter project.
+EsTuApp está diseñada específicamente para estudiantes universitarios con el objetivo de optimizar la gestión de su tiempo académico y mejorar su rendimiento. A través de una interfaz intuitiva y funcional, los usuarios pueden registrar y organizar todas sus tareas, evaluaciones pendientes y actividades completadas, categorizándolas por asignatura. Además, la aplicación permite realizar un seguimiento detallado del progreso en cada materia, incorporando un sistema de control de calificaciones que facilita al estudiante conocer su rendimiento en tiempo real. Esta herramientano solo fomenta una planificación eficiente, sino que también promueve la autonomía y responsabilidad académica, convirtiéndose en un aliado esencial para alcanzar los objetivos universitarios.
