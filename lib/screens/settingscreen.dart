@@ -137,15 +137,14 @@ class _SettingScreenState extends State<SettingScreen> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              Color.fromARGB(255, 208, 240, 1),
-                              Color.fromARGB(255, 253, 170, 52),
+                              Color(0xffFDC830), Color(0XFFf37335)
                             ],
                           ),
                         ),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            color: Colors.grey[200],
+                            color: Colors.transparent,
                           ),
                           padding: EdgeInsets.all(he * 0.012),
                           child: Row(
@@ -156,23 +155,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                 padding: EdgeInsets.all(he * 0.01),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
-                                  color: Colors.grey[300],
+                                  color: Colors.transparent,
                                 ),
                                 child: ColorFiltered(
                                   colorFilter: ColorFilter.mode(
                                     const Color.fromARGB(
-                                      255,
-                                      224,
-                                      224,
-                                      224,
-                                    ).withOpacity(0.6),
+                                      102, 228, 221, 221
+                                    ),
                                     BlendMode.srcATop,
                                   ),
-                                  child: Icon(
-                                    Icons.workspace_premium_outlined,
-                                    size: 30,
-                                    color: Colors.black54,
-                                  ),
+                                  child: Image.asset('assets/images/Recurso 8.png', height: 24, width: 24, color: Colors.black,),
                                 ),
                               ),
                               SizedBox(width: he * 0.015),
@@ -188,12 +180,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                           'assets/images/Icons/plus.png',
                                           height: 25,
                                           width: 25,
-                                          color: Color.fromARGB(
-                                            255,
-                                            141,
-                                            127,
-                                            65,
-                                          ),
+                                          color: Colors.black,
                                         ),
                                       ],
                                     ),

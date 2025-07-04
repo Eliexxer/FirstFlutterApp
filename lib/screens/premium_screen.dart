@@ -101,7 +101,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
             ),
             const SizedBox(height: 20),
             const Text(
-              '¡Bienvenido a Premium!',
+              '¡Bienvenido a EsTuPrime!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -226,7 +226,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                     ),
                     const SizedBox(height: 15),
                     const Text(
-                      'EsTuApp Premium',
+                      'EsTuPrime',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -324,7 +324,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                                 ],
                               ),
                               Text(
-                                '\$${plan['precio']} / ${plan['periodo']}',
+                                'REF ${plan['precio']} / ${plan['periodo']}',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey[600],
@@ -406,7 +406,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                           strokeWidth: 2,
                         )
                       : Text(
-                          'Suscribirse por \$${_planes[_selectedPlan]['precio']}',
+                          'Suscribirse por REF ${_planes[_selectedPlan]['precio']}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

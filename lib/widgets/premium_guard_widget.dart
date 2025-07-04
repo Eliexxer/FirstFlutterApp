@@ -140,13 +140,13 @@ class _PremiumScreenInlineState extends State<_PremiumScreenInline> {
   final List<Map<String, dynamic>> _planes = [
     {
       'titulo': 'Plan Mensual',
-      'precio': '9.99',
+      'precio': '2.99',
       'periodo': 'mes',
       'meses': 1,
     },
     {
       'titulo': 'Plan Anual',
-      'precio': '79.99',
+      'precio': '20.99',
       'periodo': 'año',
       'meses': 12,
     },
@@ -171,7 +171,7 @@ class _PremiumScreenInlineState extends State<_PremiumScreenInline> {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('¡Bienvenido a Premium!'),
+            content: Text('¡Bienvenido a EsTuPrime!'),
             backgroundColor: Colors.green,
           ),
         );
@@ -227,7 +227,7 @@ class _PremiumScreenInlineState extends State<_PremiumScreenInline> {
                   ),
                   const SizedBox(height: 15),
                   const Text(
-                    'EsTuApp Premium',
+                    'EsTuPrime',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -287,7 +287,7 @@ class _PremiumScreenInlineState extends State<_PremiumScreenInline> {
                               ),
                             ),
                             Text(
-                              '\$${plan['precio']} / ${plan['periodo']}',
+                              'REF ${plan['precio']} / ${plan['periodo']}',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey[600],
@@ -321,7 +321,7 @@ class _PremiumScreenInlineState extends State<_PremiumScreenInline> {
                         strokeWidth: 2,
                       )
                     : Text(
-                        'Suscribirse por \$${_planes[_selectedPlan]['precio']}',
+                        'Suscribirse por REF ${_planes[_selectedPlan]['precio']}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
